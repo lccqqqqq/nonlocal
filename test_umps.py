@@ -13,13 +13,15 @@ import math
 import numpy as np
 import einops
 
-# %% The ground state from gradient descent calculation
-
-# Define parameters
 g = 0.5
 N = 8
 d_phys = 2
 d_bond = 16
+
+# %% The ground state from gradient descent calculation
+
+# Define parameters
+
 learning_rate = 0.001
 num_optimization_steps = 3000
 device = "cuda" if t.cuda.is_available else "cpu"
@@ -97,6 +99,7 @@ assert abs(np.linalg.norm(ground_state) - 1) < 1e-10
 # 3. The difference between the energy and the target energy density of the true ground state
 
 # Load the training data
+coupling_str = "5em-1"
 df = pd.read_pickle(f"training_nsite_{N}_dbond_{d_bond}_coupling_{coupling_str}.pkl")
 
 # Extract tensors from dataframe
@@ -130,7 +133,10 @@ for mps_tensor in tensors:
 # %%
 import plotly.express as px
 
-px.line(energy_densities - E_gs, title="Energy density above ground state energy as training", log_x=False, log_y=True)
+# reading from existing file
+# df = pd.read_pickle("/workspace/training_nsite_8_dbond_16_coupling_5em-1.pkl")
+
+px.line(energy_densities - E_gs, title="Energy density above ground state energy as training", log_x=False, log_y=False)
 
 # %%
 
